@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SlicyCipher Encryption</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .input-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px;
+        }
+        textarea {
+            width: 80%;
+            height: 50px;
+            border-radius: 20px;
+            padding: 10px;
+            font-size: 14px;
+            border: none;
+            background: linear-gradient(to right, #ff00ff, #000080);
+            color: white;
+            text-align: center;
+            outline: none;
+        }
+        input {
+            border-radius: 10px;
+            padding: 10px;
+            border: none;
+            text-align: center;
+            font-size: 18px;
+            color: white;
+            background-color: blue;
+            outline: none;
+            width: 100px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            color: white;
+        }
+        .encrypt-btn {
+            background-color: red;
+        }
+        .decrypt-btn {
+            background-color: green;
+        }
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            width: 60%;
+            border-radius: 20px;
+            font-size: 18px;
+            color: white;
+            background: linear-gradient(to right, #ff00ff, #000080);
+            text-align: center;
+            display: none;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <h2>SlicyCipher Encryption</h2>
+    <div class="input-container">
+        <textarea id="inputText" placeholder="Enter text..."></textarea>
+    </div>
+    <input type="number" id="shiftValue" placeholder="Shift">
+    <br>
+    <button class="encrypt-btn" onclick="processText(true)">Encrypt</button>
+    <button class="decrypt-btn" onclick="processText(false)">Decrypt</button>
+    <div class="result-box" id="resultBox"></div>
+    
+    <script>
+        function encryptDecrypt(text, shift) {
+            let result = "";
+            for (let ch of text) {
+                if (/[a-zA-Z]/.test(ch)) {
+                    let base = ch === ch.toUpperCase() ? 'A' : 'a';
+                    let originalPos = ch.charCodeAt(0) - base.charCodeAt(0) + 1;
+                    let newPos = (originalPos % 2 === 1) ? (originalPos + shift) : (originalPos - shift);
+                    if (newPos > 26) newPos -= 26;
+                    if (newPos < 1) newPos += 26;
+                    result += String.fromCharCode(base.charCodeAt(0) + newPos - 1);
+                } else {
+                    result += ch;
+                }
+            }
+            return result;
+        }
+
+        function processText(isEncrypt) {
+            let text = document.getElementById("inputText").value;
+            let shift = parseInt(document.getElementById("shiftValue").value) || 0;
+            let result = encryptDecrypt(text, shift);
+            let resultBox = document.getElementById("resultBox");
+            resultBox.style.display = "block";
+            resultBox.innerText = result;
+        }
+    </script>
+</body>
+</html>
