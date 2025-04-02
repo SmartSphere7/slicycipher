@@ -92,13 +92,7 @@
                 if (/[a-zA-Z]/.test(ch)) {
                     let base = ch === ch.toUpperCase() ? 'A' : 'a';
                     let originalPos = ch.charCodeAt(0) - base.charCodeAt(0);
-                    let newPos;
-                    if (isEncrypt) {
-                        newPos = (originalPos % 2 === 1) ? (originalPos + shift) : (originalPos - shift);
-                    } else {
-                        newPos = (originalPos % 2 === 1) ? (originalPos - shift) : (originalPos + shift);
-                    }
-                    newPos = (newPos + 26) % 26; 
+                    let newPos = isEncrypt ? (originalPos + shift) % 26 : (originalPos - shift + 26) % 26;
                     result += String.fromCharCode(base.charCodeAt(0) + newPos);
                 } else {
                     result += ch;
