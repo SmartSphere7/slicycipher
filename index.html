@@ -86,13 +86,16 @@
     <div class="result-box" id="resultBox"></div>
     
     <script>
-        function encryptDecrypt(text, shift) {
+        function encryptDecrypt(text, shift, isEncrypt) {
             let result = "";
             for (let ch of text) {
                 if (/[a-zA-Z]/.test(ch)) {
                     let base = ch === ch.toUpperCase() ? 'A' : 'a';
                     let originalPos = ch.charCodeAt(0) - base.charCodeAt(0) + 1;
                     let newPos = (originalPos % 2 === 1) ? (originalPos + shift) : (originalPos - shift);
+                    if (!isEncrypt) { // Reverse shift for decryption
+                        newPos = (originalPos % 2 === 1) ? (originalPos - shift) : (originalPos + shift);
+                    }
                     if (newPos > 26) newPos -= 26;
                     if (newPos < 1) newPos += 26;
                     result += String.fromCharCode(base.charCodeAt(0) + newPos - 1);
@@ -106,7 +109,7 @@
         function processText(isEncrypt) {
             let text = document.getElementById("inputText").value;
             let shift = parseInt(document.getElementById("shiftValue").value) || 0;
-            let result = encryptDecrypt(text, shift);
+            let result = encryptDecrypt(text, shift, isEncrypt);
             let resultBox = document.getElementById("resultBox");
             resultBox.style.display = "block";
             resultBox.innerText = result;
